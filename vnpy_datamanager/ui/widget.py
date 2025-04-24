@@ -132,9 +132,9 @@ class ManagerWidget(QtWidgets.QWidget):
             exchange_child: QtWidgets.QTreeWidgetItem = exchange_childs.get(key, None)
 
             if not exchange_child:
-                interval_child: QtWidgets.QTreeWidgetItem = interval_childs[overview.interval]
+                interval_child = interval_childs[overview.interval]
 
-                exchange_child: QtWidgets.QTreeWidgetItem = QtWidgets.QTreeWidgetItem(interval_child)
+                exchange_child = QtWidgets.QTreeWidgetItem(interval_child)
                 exchange_child.setText(0, overview.exchange.value)
 
                 exchange_childs[key] = exchange_child
@@ -415,7 +415,7 @@ class DataCell(QtWidgets.QTableWidgetItem):
 class DateRangeDialog(QtWidgets.QDialog):
     """"""
 
-    def __init__(self, start: datetime, end: datetime, parent=None) -> None:
+    def __init__(self, start: datetime, end: datetime, parent: QtWidgets.QWidget | None = None) -> None:
         """"""
         super().__init__(parent)
 
@@ -456,7 +456,7 @@ class DateRangeDialog(QtWidgets.QDialog):
 class ImportDialog(QtWidgets.QDialog):
     """"""
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
         """"""
         super().__init__()
 
@@ -547,7 +547,7 @@ class ImportDialog(QtWidgets.QDialog):
 class DownloadDialog(QtWidgets.QDialog):
     """"""
 
-    def __init__(self, engine: ManagerEngine, parent=None) -> None:
+    def __init__(self, engine: ManagerEngine, parent: QtWidgets.QWidget | None = None) -> None:
         """"""
         super().__init__()
 
@@ -601,12 +601,12 @@ class DownloadDialog(QtWidgets.QDialog):
 
         start_date = self.start_date_edit.date()
         start: datetime = datetime(start_date.year(), start_date.month(), start_date.day())
-        start: datetime = start.replace(tzinfo=DB_TZ)
+        start = start.replace(tzinfo=DB_TZ)
 
         if interval == Interval.TICK:
             count: int = self.engine.download_tick_data(symbol, exchange, start, self.output)
         else:
-            count: int = self.engine.download_bar_data(symbol, exchange, interval, start, self.output)
+            count = self.engine.download_bar_data(symbol, exchange, interval, start, self.output)
 
         QtWidgets.QMessageBox.information(self, "下载结束", f"下载总数据量：{count}条")
 

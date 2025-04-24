@@ -50,15 +50,15 @@ class ManagerEngine(BaseEngine):
         reader: csv.DictReader = csv.DictReader(buf, delimiter=",")
 
         bars: list[BarData] = []
-        start: datetime = None
+        start: datetime | None = None
         count: int = 0
-        tz = ZoneInfo(tz_name)
+        tz: ZoneInfo = ZoneInfo(tz_name)
 
         for item in reader:
             if datetime_format:
                 dt: datetime = datetime.strptime(item[datetime_head], datetime_format)
             else:
-                dt: datetime = datetime.fromisoformat(item[datetime_head])
+                dt = datetime.fromisoformat(item[datetime_head])
             dt = dt.replace(tzinfo=tz)
 
             turnover = item.get(turnover_head, 0)
@@ -144,7 +144,8 @@ class ManagerEngine(BaseEngine):
 
     def get_bar_overview(self) -> list[BarOverview]:
         """"""
-        return self.database.get_bar_overview()
+        overview: list[BarOverview] = self.database.get_bar_overview()
+        return overview
 
     def load_bar_data(
         self,
@@ -209,7 +210,7 @@ class ManagerEngine(BaseEngine):
             )
         # Otherwise use datafeed to query data
         else:
-            data: list[BarData] = self.datafeed.query_bar_history(req, output)
+            data = self.datafeed.query_bar_history(req, output)
 
         if data:
             self.database.save_bar_data(data)
