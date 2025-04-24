@@ -22,16 +22,18 @@
 
 from pathlib import Path
 
-import importlib_metadata
 from vnpy.trader.app import BaseApp
 
 from .engine import APP_NAME, ManagerEngine
 
 
-try:
-    __version__ = importlib_metadata.version("vnpy_datamanager")
-except importlib_metadata.PackageNotFoundError:
-    __version__ = "dev"
+__all__ = [
+    "APP_NAME",
+    "ManagerEngine",
+    "DataManagerApp",
+]
+
+__version__ = "1.2.0"
 
 
 class DataManagerApp(BaseApp):
@@ -41,6 +43,6 @@ class DataManagerApp(BaseApp):
     app_module: str = __module__
     app_path: Path = Path(__file__).parent
     display_name: str = "数据管理"
-    engine_class: ManagerEngine = ManagerEngine
+    engine_class: type[ManagerEngine] = ManagerEngine
     widget_name: str = "ManagerWidget"
     icon_name: str = str(app_path.joinpath("ui", "manager.ico"))
