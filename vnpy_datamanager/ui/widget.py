@@ -1,4 +1,3 @@
-from typing import List, Tuple, Dict
 from functools import partial
 from datetime import datetime, timedelta
 
@@ -111,11 +110,11 @@ class ManagerWidget(QtWidgets.QWidget):
         self.tree.clear()
 
         # 初始化节点缓存字典
-        interval_childs: Dict[Interval, QtWidgets.QTreeWidgetItem] = {}
-        exchange_childs: Dict[tuple[Interval, Exchange], QtWidgets.QTreeWidgetItem] = {}
+        interval_childs: dict[Interval, QtWidgets.QTreeWidgetItem] = {}
+        exchange_childs: dict[tuple[Interval, Exchange], QtWidgets.QTreeWidgetItem] = {}
 
         # 查询数据汇总，并基于合约代码进行排序
-        overviews: List[BarOverview] = self.engine.get_bar_overview()
+        overviews: list[BarOverview] = self.engine.get_bar_overview()
         overviews.sort(key=lambda x: x.symbol)
 
         # 添加数据周期节点
@@ -299,7 +298,7 @@ class ManagerWidget(QtWidgets.QWidget):
             return
         start, end = dialog.get_date_range()
 
-        bars: List[BarData] = self.engine.load_bar_data(
+        bars: list[BarData] = self.engine.load_bar_data(
             symbol,
             exchange,
             interval,
@@ -353,7 +352,7 @@ class ManagerWidget(QtWidgets.QWidget):
 
     def update_data(self) -> None:
         """"""
-        overviews: List[BarOverview] = self.engine.get_bar_overview()
+        overviews: list[BarOverview] = self.engine.get_bar_overview()
         total: int = len(overviews)
         count: int = 0
 
@@ -447,7 +446,7 @@ class DateRangeDialog(QtWidgets.QDialog):
 
         self.setLayout(form)
 
-    def get_date_range(self) -> Tuple[datetime, datetime]:
+    def get_date_range(self) -> tuple[datetime, datetime]:
         """"""
         start = self.start_edit.dateTime().toPython()
         end = self.end_edit.dateTime().toPython() + timedelta(days=1)
